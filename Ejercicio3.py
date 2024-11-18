@@ -10,15 +10,16 @@ class SesionUsuario:
         print(f'{self.nombre_usuario}')
 
 def main():
-        sesion_usuario = SesionUsuario()
         datos_sesion = threading.local()
 
         def gestionar_sesion(nombre_usuario):
-            datos_sesion = sesion_usuario.iniciar_sesion(nombre_usuario)
-            datos_sesion.mostrar_sesion()
+            datos_sesion.sesion_usuario = SesionUsuario()
+            datos_sesion.sesion_usuario.iniciar_sesion(nombre_usuario)
+            time.sleep(2)
+            datos_sesion.sesion_usuario.mostrar_sesion()
 
         hilos = []
-        nombres_usuarios = ["Alice", "Bob", "Charlie", "Diana"]
+        nombres_usuarios = ["Alicia", "Ana", "Manuel", "Hugo"]
 
         for nombre in nombres_usuarios:
             hilo = threading.Thread(target=gestionar_sesion(nombre))
@@ -27,3 +28,5 @@ def main():
 
         for hilo in hilos:
             hilo.join()
+
+        print("Todas las sesiones han sido gestionadas correctamente.")
