@@ -6,7 +6,7 @@ class SesionUsuario:
     def iniciar_sesion(self, nombre_usuario):
         self.nombre_usuario = nombre_usuario
 
-    def mostrar_sesion():
+    def mostrar_sesion(self):
         print(f'{self.nombre_usuario}')
 
 def main():
