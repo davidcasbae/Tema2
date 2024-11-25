@@ -2,31 +2,30 @@ import threading
 import time
 
 
+nombre= threading.local()
 class SesionUsuario:
     def iniciar_sesion(self, nombre_usuario):
-        self.nombre_usuario = nombre_usuario
-
+        nombre.nombre_usuario = nombre_usuario
     def mostrar_sesion(self):
-        print(f'{self.nombre_usuario}')
+        print(f"Sesión iniciada para el usuario: {nombre.nombre_usuario}")
+    def gestionar_sesion(self, nombre_usuario):
+        self.iniciar_sesion(nombre_usuario)
+        time.sleep(2)
+        self.mostrar_sesion()
 
 def main():
-        datos_sesion = threading.local()
+    hilos = []
+    nombres_usuarios = ["Alicia", "Ana", "Manuel", "Hugo"]
 
-        def gestionar_sesion(nombre_usuario):
-            datos_sesion.sesion_usuario = SesionUsuario()
-            datos_sesion.sesion_usuario.iniciar_sesion(nombre_usuario)
-            time.sleep(2)
-            datos_sesion.sesion_usuario.mostrar_sesion()
-
-        hilos = []
-        nombres_usuarios = ["Alicia", "Ana", "Manuel", "Hugo"]
-
-        for nombre in nombres_usuarios:
-            hilo = threading.Thread(target=gestionar_sesion(nombre))
-            hilos.append(hilo)
-            hilo.start()
+    for nombre_usuario in nombres_usuarios:
+        sesion = SesionUsuario()
+        hilo = threading.Thread(target=sesion.gestionar_sesion, args=(nombre_usuario,))
+        hilos.append(hilo)
+        hilo.start()
 
         for hilo in hilos:
             hilo.join()
 
-        print("Todas las sesiones han sido gestionadas correctamente.")
+    print("Todas las sesiones han sido gestionadas correctamente.")
+if __name__ == '__main__':
+    main()
